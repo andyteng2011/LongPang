@@ -1,0 +1,157 @@
+<div class='col-lg-4 col-md-5 centering padding-top-align'>
+    <div class='row'>
+        <h1 class='logo-font-hd'>Search Results</h1>
+		<div class="previous centering"><a href="#/searchTrip">&larr; Need a Ride</a></div>
+		<br/>
+    </div>
+    <div>
+        <b>Sort By (Ascending)</b><br/>
+
+        <div class="btn-group">
+            <button type="button" class="btn btn-default" data-ng-click="sortVar = 'pickupPointDistance';
+                sortOrder = '+'">From</button>
+            <button type="button" class="btn btn-default" data-ng-click="sortVar = 'dropoffPointDistance';
+                sortOrder = '+'">To</button>
+            <button type="button" class="btn btn-default" data-ng-click="sortVar = '-price';
+                sortOrder = '-'">Price</button>
+            <button type="button" class="btn btn-default" data-ng-click="sortVar = 'travelingTime';
+                sortOrder = '+'">ETA</button>
+        </div>
+    </div>
+	
+    <div class="row" >
+        <div id="tripsDiv" style="padding:10px">
+             <div data-ng-repeat="trip in toArray(trips)| orderBy:sortVar | limitTo:sortOrder + objLength(trips)" id={{trip.id}}>
+                <button type="button" class="btn btn-default btn-lg btn-block" style="padding:10px;font-size:0.9em;" data-ng-click='viewTrip(trip)'>
+                    <table style="display:normal; text-align: left; table-layout:fixed; width:100%; white-space:normal; word-wrap: break-word">
+                        <tr>
+                            <td colspan="2"><b>From: </b>{{trip.pickupPoint}}<b> ({{trip.pickupPointDistance}}m)</b></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><b>To: </b>{{trip.dropoffPoint}}<b> ({{trip.dropoffPointDistance}}m)</b></td>
+                        </tr>
+                        <tr>
+                            <td><b>Move Off: </b>{{trip.startTime}}</td>
+                            <td><b>Traveling Time: </b>{{trip.travelingTime}} mins</td>
+
+                        </tr>
+                        <tr>
+                            <td><b></b></td>
+                            <td><b>Price: </b>${{trip.price}}</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td style="text-align: right"><button type="button" class="btn btn-primary" data-toggle="button" data-ng-click="quickJoin(trip.id,trip.driver.email);$event.stopPropagation()">Quick Join</button></td>
+                        </tr>
+                    </table>
+                </button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- Login Modal -->
+<div class="modal fade" id="loginModal_searchTrip" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-sm">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title modal-title-font-lobster" id="myModalLabel">Log In</h4>
+			</div>
+			<div class="modal-body">
+				<form role="form" data-ng-submit="login_searchTrip($event)">
+					<div class="input-group">
+						<span class="input-group-addon">
+						<i class='glyphicon glyphicon-envelope'></i>
+						</span>
+						<input id="email" type="text" class="form-control" placeholder='Enter Email Address' data-ng-model='login.email'>
+					</div>
+					
+					<div class="input-group">
+						<span class="input-group-addon">
+						<i class='glyphicon glyphicon-lock'></i>
+						</span>
+						<input id="password" type="password" class="form-control" placeholder='Enter Password' data-ng-model='login.password'>
+					</div>
+					<br/>
+					<div align="left">
+						<a href="" data-dismiss="modal" data-toggle="modal" data-target="#signupModal">Sign up as new LongPang'er</a>
+					</div>
+					<div align="right">
+						<button type="submit" class="btn btn-primary">Login</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- Login Modal End-->
+
+<!-- Payment Info Modal -->
+<div class="modal fade" id="paymentInfoModal_searchTrip" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			<h4 class="modal-title modal-title-font-lobster" id="myModalLabel">Payment Info</h4>
+			</div>
+			<div class="modal-body centering">
+				<form role="form" data-ng-submit="updatePaymentInfo_searchTrip($event)">
+					<h4>Select Your Payment Mode!</h4>
+					<input type="radio" name="payment" id="cc" onclick="selectPaymentMode();">Credit Card
+					<input type="radio" name="payment" id="pp" onclick="selectPaymentMode();">PayPal<br/><br/>
+					
+					<div id="creditCard" style="display:none; align:center">
+						<h5 align="left">Enter Credit Card Info</h5>
+						<ul class="list-group">
+							<li class="list-group-item">
+									<p align="left">Credit Card No.</p>
+									<input id="updatePaymentInfoCreditCardNo" type="text" class="form-control" placeholder='Enter credit card no' value="{{$storage.userLoggedIn.creditCardInfo.creditCardNo}}"/>
+							</li>
+							
+							<li class="list-group-item">
+								<p align="left">CVV2</p>
+								<input id="updatePaymentInfoCVV2" type="text" class="form-control" placeholder='Enter CVV2' value="{{$storage.userLoggedIn.creditCardInfo.cvv2}}"/>
+								
+							</li>
+
+							<li class="list-group-item">
+								<p align="left">Expiry Date</p>
+								<input id="updatePaymentInfoExpiryDate" type="date" class="form-control" placeholder='Enter expiry date' value="{{$storage.userLoggedIn.creditCardInfo.expiryDate}}"/>
+							</li>
+						</ul>
+					</div>
+					
+					<div id="paypal" style="display:none">
+						<h5 align="left">Enter PayPal Email</h5>
+						<ul class="list-group">
+							<li class="list-group-item">
+								<p align="left">PayPal Email</p>
+								<input id="updatePaymentInfoPayPalEmail" type="text" class="form-control" placeholder='Enter PayPal email' value="{{$storage.userLoggedIn.creditCardInfo.paypalEmail}}"/>
+							</li>
+						</ul>
+					</div>
+					
+					<div align="right">
+						<button class="btn btn-default" type="button" data-dismiss="modal">Cancel</button>
+						<input class='btn btn-primary' type="submit" value="Save">
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- Payment Info Modal End -->
+
+<script>
+	function selectPaymentMode() {
+		if(document.getElementById('cc').checked) {
+			document.getElementById('creditCard').style.display = 'block';
+			document.getElementById('paypal').style.display = 'none';
+		} else if(document.getElementById('pp').checked) {
+			document.getElementById('creditCard').style.display = 'none';
+			document.getElementById('paypal').style.display = 'block';
+		}
+	};
+</script>

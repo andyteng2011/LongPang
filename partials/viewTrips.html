@@ -1,0 +1,34 @@
+<div class='col-lg-4 col-md-5 centering padding-top-align'>
+	<div class='row'>
+		<h1 class='logo-font-hd'>Your Rides</h1>
+	</div>
+	
+	<div class='row'>
+		<div id="tripsDiv" style="padding:10px" data-ng-if="usersTrips[$storage.userLoggedIn.emailKey] != null">
+             <div data-ng-repeat="trip in usersTrips[$storage.userLoggedIn.emailKey]">
+                <button type="button" class="btn btn-default btn-lg btn-block" style="padding:10px;font-size:0.9em;" data-ng-click='viewTripUser(trip)'>
+                    <table style="display:normal; text-align: left; table-layout:fixed; width:100%; white-space:normal; word-wrap: break-word">
+                        <tr>
+                            <td colspan="2"><b>From: </b>{{trips[trip.id].pickupPoint}}</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><b>To: </b>{{trips[trip.id].dropoffPoint}}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Move Off: </b>{{trips[trip.id].startTime}}</td>
+                            <td><b>Traveling Time: </b>{{trips[trip.id].travelingTime}} mins</td>
+
+                        </tr>
+                        <tr>
+                            <td><b>Price: </b>${{trips[trip.id].price}}</td>
+                        </tr>
+                    </table>
+                </button>
+            </div>
+        </div>
+		
+		<div id="tripsDiv" style="padding:10px" data-ng-if="usersTrips[$storage.userLoggedIn.emailKey] == null">
+			<h3>You do not have any rides yet Find a ride or Offer a ride now!</h3>
+        </div>
+	</div>
+</div>

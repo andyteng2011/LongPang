@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang='en' data-ng-app="longpangApp" data-ng-controller='longpangCtrl'>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>LongPang</title>
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/range.css"/>
+    <link rel="stylesheet" href="css/datepicker.css"/>
+    <link rel="stylesheet" href="css/bootstrap-timepicker.css" />
+    <link rel="stylesheet" href="css/preferences-slider.css" />
+    <link rel="stylesheet" href="css/main.css" />
+
+    <!-- Custom Google Web Font -->
+    <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href='https://fonts.googleapis.com/css?family=Lato:100,300,400,700,900,100italic,300italic,400italic,700italic,900italic' rel='stylesheet' type='text/css'>
+
+    <!-- Add custom CSS here -->
+    <link rel="stylesheet" href="css/main.css" >
+
+</head>
+
+<body>
+	<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand logo-font-lg" href="#">LongPang</a>
+			</div>
+
+			<!-- Collect the nav links, forms, and other content for toggling -->
+			<div class="navbar-collapse collapse" id="bs-example-navbar-collapse-1">
+				 <ul class="nav navbar-nav">
+					<li class="visible-xs"><a href="#/searchTrip" data-toggle="collapse" data-target=".navbar-collapse">Need a Ride</a></li>
+					<li class="hidden-xs"><a href="#/searchTrip">Need a Ride</a></li>
+					<li class="visible-xs"><a href="#/createTrip" data-toggle="collapse" data-target=".navbar-collapse">Offer a Ride</a></li>
+					<li class="hidden-xs"><a href="#/createTrip">Offer a Ride</a></li>
+					<li class="visible-xs" data-ng-if="$storage.loginStatus == true"><a href="#/viewTrips" data-toggle="collapse" data-target=".navbar-collapse">View my Rides</a></li>
+					<li class="hidden-xs" data-ng-if="$storage.loginStatus == true"><a href="#/viewTrips">View my Rides</a></li>
+					<li class="visible-xs" data-ng-if="$storage.loginStatus == true"><a href="#/viewPastTransactions" data-toggle="collapse" data-target=".navbar-collapse">Past Transactions</a></li>
+					<li class="hidden-xs" data-ng-if="$storage.loginStatus == true"><a href="#/viewPastTransactions">Past Transactions</a></li>
+					<li class="visible-xs" data-ng-if="$storage.loginStatus == true"><a href="" data-toggle="collapse" data-target=".navbar-collapse" onclick="showPaymentModal()">Payment</a></li>
+					<li class="hidden-xs" data-ng-if="$storage.loginStatus == true"><a href="" data-toggle="modal" data-target="#paymentModal">Payment</a></li>
+					<li class="visible-xs" data-ng-if="$storage.loginStatus == true"><a href="#/notifications" data-toggle="collapse" data-target=".navbar-collapse">Notification<span class="badge">{{usersNotifications[$storage.userLoggedIn.emailKey].count}}</span></a></li>
+					<li class="hidden-xs" data-ng-if="$storage.loginStatus == true"><a href="#/notifications">Notification<span class="badge">{{usersNotifications[$storage.userLoggedIn.emailKey].count}}</span></a></li>
+				 </ul>
+				  <ul class="nav navbar-nav navbar-right">
+					<li class="visible-xs" data-ng-if="$storage.loginStatus == false"><a href="" data-toggle="collapse" data-target=".navbar-collapse" onclick="showSignupModal()">Sign Up</a></li>
+					<li class="hidden-xs" data-ng-if="$storage.loginStatus == false"><a href="" data-toggle="modal" data-target="#signupModal">Sign Up</a></li>
+					<li class="visible-xs" data-ng-if="$storage.loginStatus == false"><a href="" data-toggle="collapse" data-target=".navbar-collapse" onclick="showLoginModal()">Log In</a></li>
+					<li class="hidden-xs" data-ng-if="$storage.loginStatus == false"><a href="" data-toggle="modal" data-target="#loginModal">Log In</a></li>
+					<li class="visible-xs" data-ng-if="$storage.loginStatus == true"><a href="#/profile" data-toggle="collapse" data-target=".navbar-collapse">{{$storage.userLoggedIn.name}}</a></li>
+					<li class="hidden-xs" data-ng-if="$storage.loginStatus == true"><a href="#/profile">{{$storage.userLoggedIn.name}}</a></li>
+					<li class="visible-xs" data-ng-if="$storage.loginStatus == true"><a href="" data-toggle="collapse" data-target=".navbar-collapse" data-ng-click="logout()">Logout</a></li>
+					<li class="hidden-xs" data-ng-if="$storage.loginStatus == true"><a href="" data-ng-click="logout()">Logout</a></li>
+					<li class="visible-xs"><a href="#/help" data-toggle="collapse" data-target=".navbar-collapse">Help</a></li>
+					<li class="hidden-xs"><a href="#/help">Help</a></li>
+				  </ul>
+				</div><!-- /.navbar-collapse -->
+		</div>
+		<!-- /.container -->
+	</nav>
+
+    <!-- ng-view -->
+    <div ng-view></div>
+	
+	<!-- Signup Modal -->
+	<div class="modal fade" id="signupModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title modal-title-font-lobster" id="myModalLabel">Sign Up as LongPang'er!</h4>
+				</div>
+				<div class="modal-body centering">
+					<form role="form" data-ng-submit="registerUser($event)">
+					
+						<div style="height:0px;overflow:hidden">
+							<input id="photo" type="file" onchange="loadImageFileAsURL();"/>
+							<textarea id="textAreaFileContents"></textarea>
+						</div>
+						<img id="addPhoto" src="img/Add_Photo.png" class="img-circle" style="width:30%;height:30%" onclick="chooseFile();">
+
+						<ul class="list-group">
+							<li class="list-group-item">
+								<div class="input-group centering">
+								  <button type="button" class="btn btn-primary">Use Your Facebook Info</button>
+								</div>
+							</li>
+							<li class="list-group-item">
+								<div class="input-group centering">
+								  <span class="input-group-addon">
+									<i class='glyphicon glyphicon-envelope'></i>
+								  </span>
+								  <input type="text" class="form-control" placeholder='Email Address' data-ng-model='newUser.email'>
+								</div>
+							</li>
+
+							<li class="list-group-item">
+								<div class="input-group">
+								  <span class="input-group-addon">
+									<i class='glyphicon glyphicon-lock'></i>
+								  </span>
+								  <input type="password" class="form-control" placeholder='Password' data-ng-model='newUser.password'>
+								</div>
+							</li>
+
+							<li class="list-group-item">
+								<div class="input-group">
+								  <span class="input-group-addon">
+									<i class='glyphicon glyphicon-user'></i>
+								  </span>
+								  <input type="text" class="form-control" placeholder='Full Name' data-ng-model='newUser.fullName'>
+								</div>
+							</li>
+
+							<li class="list-group-item">
+								<div class="input-group">
+								  <span class="input-group-addon">
+									<i class='glyphicon glyphicon-earphone'></i>
+								  </span>
+								  <input type="text" class="form-control" placeholder='Contact Number' data-ng-model='newUser.contactNumber'>
+								</div>
+							</li>
+						</ul>
+						<label>
+							By clicking Sign Up, you are indicating that you have read and agree to the <u>Privacy Policy</u> and <u>Terms of Service</u>.
+						</label>
+						<input class='btn btn-primary' type="submit" value="Sign Up">
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Signup Modal End-->
+	
+	<!-- Login Modal -->
+	<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-sm">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title modal-title-font-lobster" id="myModalLabel">Log In</h4>
+				</div>
+				<div class="modal-body">
+					<form role="form" data-ng-submit="login($event)">
+						<div class="input-group">
+							<span class="input-group-addon">
+							<i class='glyphicon glyphicon-envelope'></i>
+							</span>
+							<input id="email" type="text" class="form-control" placeholder='Enter Email Address' data-ng-model='login.email'>
+						</div>
+						<br />
+						<div class="input-group">
+							<span class="input-group-addon">
+							<i class='glyphicon glyphicon-lock'></i>
+							</span>
+							<input id="password" type="password" class="form-control" placeholder='Enter Password' data-ng-model='login.password'>
+						</div>
+						<br/>
+						<div align="left">
+							<a href="" data-dismiss="modal" data-toggle="modal" data-target="#signupModal">Sign up as new LongPang'er</a>
+						</div>
+						<div align="right">
+							<button type="submit" class="btn btn-primary">Login</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Login Modal End-->
+	
+	<!-- Logout Modal -->
+	<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-sm">
+			<div class="modal-content">
+				<div class="modal-body">
+					<h3>Thank you for using LongPang!<br/>Hope to see you again soon! ;)</h3>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Logout Modal End-->
+	
+	<!-- Payment Modal -->
+	<div class="modal fade" id="paymentModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-sm">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title modal-title-font-lobster" id="myModalLabel">Payment</h4>
+				</div>
+				<div class="modal-body">
+					<a data-toggle="modal" data-dismiss="modal" onclick="loadEnterPin()" href="#QRCode" class="btn btn-primary">Scan QR Code</a>
+					<a data-toggle="modal" data-dismiss="modal" onclick="loadEnterPin()" href="#enterPin" class="btn btn-warning">Generate OTP</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<!-- Enter One Time Pin Modal -->
+	<div class="modal" id="enterPin" data-backdrop="static">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title modal-title-font-lobster">Enter One Time Pin</h4>
+				</div>
+				<div class="modal-body">
+					Please enter the OTP that is send to your SMS.
+					</br>
+					<div id="divOTP">
+						<div class="input-group">
+							<span class="input-group-addon">
+								<i class='glyphicon glyphicon-lock'></i>
+							</span>
+							<form role="form" data-ng-submit="payment($event)">
+								<input id="otp" type="text" onclick="loadQRCode()" class="form-control" placeholder='Enter OTP' data-ng-model='payment.otp'>
+						</div>
+					</div>
+				</div>
+
+				<div class="modal-footer">
+					<a href="" data-dismiss="modal" class="btn btn-danger">Close</a>
+					<a data-toggle="modal" onclick="loadConfirmPayment()" href="#confirmPayment" class="btn btn-primary">Confirm</a>
+				</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	
+	<!-- Confirm Payment Modal -->
+	<div class="modal fade" id="confirmPayment" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-sm">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title modal-title-font-lobster" id="myModalLabel">Payment Confirmation</h4>
+				</div>
+				<div class="modal-body">
+					<h4>By clicking Confirm Payment, you are approving to make a transaction for this trip.</h4>
+					<form role="form" data-ng-submit="payment($event)">
+						<div id="divOTP">
+							<div class="input-group" style="display:none">>
+								<span class="input-group-addon">
+								<i class='glyphicon glyphicon-lock'></i>
+								</span>
+								<input id="otp" type="text" class="form-control" placeholder='Enter OTP' data-ng-model='payment.otp'>
+							</div>	
+						</div>
+						<a href="#" data-dismiss="modal" class="btn btn-danger">Close</a>
+						<button type="submit" data-dismiss="modal" class="btn btn-primary" onclick="alert('Transaction has been made! Thank you!');"> Confirm Payment</button>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	
+	
+	<!-- QR Code-->
+	<div class="modal" id="QRCode" data-backdrop="static">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-body">
+					<img id="addPhoto" src="img/QRCodePhone.png" style="width:100%;height:100%" onclick="loadQRConfirmPayment()">
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<!-- Fail Modal -->
+	<div class="modal fade" id="QRFail" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-sm">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title modal-title-font-lobster" id="myModalLabel">Please try again</h4>
+				</div>
+				<div class="modal-body">
+					<a data-toggle="modal" data-dismiss="modal" onclick="loadEnterPin()" href="#QRCode" class="btn btn-primary">Rescan QR Code</a>
+					<a data-toggle="modal" data-dismiss="modal" onclick="loadEnterPin()" href="#enterPin" class="btn btn-warning">Generate OTP</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Payment Modal End-->
+	
+	
+    <!-- JavaScript -->
+    <script type='text/javascript' src='js/jquery.min.js'></script>
+    <script type="text/javascript" src='js/angular.min.js'></script>
+    <script type="text/javascript" src='js/angular-route.min.js'></script>
+    <script type="text/javascript" src='js/bootstrap.min.js'></script>
+    <script type="text/javascript" src='js/controller.js'></script>
+    <script type="text/javascript" src='js/main.js'></script>
+	<script type="text/javascript" src='js/ngStorage.js'></script>
+
+    <script type='text/javascript' src="js/jquery.geocomplete.js"></script>
+    <script type='text/javascript' src="js/logger.js"></script>
+    <script type='text/javascript' src="js/bootstrap-datepicker.js"></script>
+    <script type='text/javascript' src="js/bootstrap-timepicker.min.js"></script>
+        
+    <script src="https://maps.googleapis.com/maps/api/js?sensor=false&amp;libraries=places"></script>
+    <script src="https://cdn.firebase.com/js/client/1.0.6/firebase.js"></script>
+    <script src="https://cdn.firebase.com/libs/angularfire/0.7.0/angularfire.min.js"></script>
+	
+	<script>
+		function loadImageFileAsURL() {
+			var filesSelected = document.getElementById("photo").files;
+			if (filesSelected.length > 0) {
+				var fileToLoad = filesSelected[0];
+
+				var fileReader = new FileReader();
+
+				fileReader.onload = function(fileLoadedEvent)  {
+					var textAreaFileContents = document.getElementById("textAreaFileContents");
+					textAreaFileContents.innerHTML = fileLoadedEvent.target.result;
+					document.getElementById("addPhoto").setAttribute("src",fileLoadedEvent.target.result);
+				};
+
+				fileReader.readAsDataURL(fileToLoad);
+			}
+		}
+		
+		function chooseFile() {
+			$("#photo").click();
+		}
+		
+		function showOTP() {
+			document.getElementById("divOTP").style.display = "block";
+		}
+		
+		function loadConfirmPayment(){
+			$('#enterPin').modal('hide');
+		}
+		
+		function loadEnterPin(){
+			$('#paymentModal').modal('hide');
+		}
+		
+		function loadEnterPin(){
+			$('#QRFail').modal('hide');
+		}
+		
+		function loadQRConfirmPayment(){
+			$('#QRCode').modal('hide');
+			$('#confirmPayment').modal('show');
+		}
+		function loadQRCode(){
+		
+			$('#paymentModal').modal('hide');
+		}
+		
+		function collapseMenu() {
+			$('.navbar-collapse').collapse('hide');
+		};
+		
+		function showSignupModal() {
+			$('#signupModal').modal('show');
+		};
+		
+		function showLoginModal() {
+			$('#loginModal').modal('show');
+		};
+		
+		function showPaymentModal() {
+			$('#paymentModal').modal('show');
+		};
+	</script>
+</body>
+
+</html>

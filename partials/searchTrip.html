@@ -1,0 +1,192 @@
+<div class='col-lg-4 col-md-5 centering padding-top-align'>
+	<div class='row'>
+		<h1 class='logo-font-hd'>Need a Ride</h1>
+	</div>
+	<form class="form-horizontal" role="form" data-ng-submit="searchTrip($event)">
+		<ul class="list-group">
+			<li class="list-group-item">
+				<div class="input-group">
+					<span class="input-group-addon">
+						<i class="glyphicon glyphicon-map-marker"></i>
+					</span>
+					<input class="form-control" id="createtrip_pickupTextBox" name="createtrip_pickupTextBox" type="text" placeholder="Enter preferred pick-up location" />
+				</div>
+			</li>
+			
+			<li class="list-group-item">
+				<div class="input-group">
+					<span class="input-group-addon">
+						<i class="glyphicon glyphicon-map-marker"></i>
+					</span>
+					<input class="form-control" id="createtrip_dropoffTextBox" name="createtrip_dropoffTextBox" type="text" placeholder="Enter preferred drop-off location"/>
+				</div>
+			</li>
+			
+			<li class="list-group-item">
+				<div class="input-group">
+					Set Recurring Days
+					<div class="btn-group" id="weekdays" data-toggle="buttons">
+						<label class="btn btn-default active btn-sm">
+						<input type="checkbox" id="createTrip.sun" checked>Sun</label>	
+						<label class="btn btn-default active btn-sm">
+						<input type="checkbox" id="createTrip.mon" checked>Mon</label>
+						<label class="btn btn-default active btn-sm">
+						<input type="checkbox" id="createTrip.tue" checked>Tue</label>
+						<label class="btn btn-default active btn-sm">
+						<input type="checkbox" id="createTrip.wed" checked>Wed</label>
+						<label class="btn btn-default active btn-sm">
+						<input type="checkbox" id="createTrip.thur" checked>Thur</label>		
+						<label class="btn btn-default active btn-sm">
+						<input type="checkbox" id="createTrip.fri" checked>Fri</label>
+						<label class="btn btn-default active btn-sm">
+						<input type="checkbox" id="createTrip.sat" checked>Sat</label>
+					</div>
+				</div>
+			</li>
+			
+			<li style="list-style-type:none">
+					Start Date
+			</li>
+			<li class="list-group-item">
+				<div class="input-group">
+					<span class="input-group-addon">
+						<i class="glyphicon glyphicon-calendar"></i>
+					</span>
+					<input class="form-control" type="date" data-ng-model="createTrip.startDate"/>
+					</div>
+			</li>
+			<li style="list-style-type:none">
+					Pick-up Time
+			</li>
+			
+			<li class="list-group-item">
+				<div class="input-group">
+					<span class="input-group-addon">
+						<i class="glyphicon glyphicon-time"></i>
+					</span>
+					<input class="form-control" type="time" data-ng-model="createTrip.startTime"/>
+					</div>
+			</li>
+			
+			<div align="center">
+				<input class="btn btn-info" data-toggle="modal" data-target="#preferencesInfoModal" value="Set Preferences"/>
+				<button class="btn btn-primary" type="submit">Need a Ride</button>
+			</div>
+		</ul>
+	</form>
+</div>
+
+
+<!-- Preferences Info Modal -->
+<div class="modal fade" id="preferencesInfoModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			<h4 class="modal-title modal-title-font-lobster" id="myModalLabel">Preferences</h4>
+			</div>
+			<div class="modal-body">
+				<form class="form-horizontal" role="form" data-ng-submit="updatePreferencesInfo($event)">
+					
+					<div class="form-group">
+						<label class="col-md-4 control-label" for="singlebutton">Allow Smoking?</label>
+						<div class="col-md-4">
+							<div class="onoffswitch">
+								<input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="preferenceSmoke" data-ng-model="$storage.userLoggedIn.preferences.smoke"/>
+								<label class="onoffswitch-label" for="preferenceSmoke" >
+									<div class="onoffswitch-inner"></div>
+									<div class="onoffswitch-switch"></div>
+								</label>
+							</div>
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<label class="col-md-4 control-label" for="singlebutton">Allow Pets?</label>
+						<div class="col-md-4">
+							<div class="onoffswitchPets">
+								<input type="checkbox" name="onoffswitchPets" class="onoffswitchPets-checkbox" id="preferencePets" data-ng-model="$storage.userLoggedIn.preferences.pets"/>
+								<label class="onoffswitchPets-label" for="preferencePets">
+									<div class="onoffswitchPets-inner"></div>
+									<div class="onoffswitchPets-switch"></div>
+								</label>
+							</div>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-md-4 control-label" for="singlebutton">Allow Food?</label>
+						<div class="col-md-4">
+							<div class="onoffswitchFood">
+								<input type="checkbox" name="onoffswitchFood" class="onoffswitchFood-checkbox" id="preferenceFood" data-ng-model="$storage.userLoggedIn.preferences.food"/>
+								<label class="onoffswitchFood-label" for="preferenceFood">
+									<div class="onoffswitchFood-inner"></div>
+									<div class="onoffswitchFood-switch"></div>
+								</label>
+							</div>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-md-4 control-label" for="singlebutton">Allow Music?</label>
+						<div class="col-md-4">
+							<div class="onoffswitchMusic">
+								<input type="checkbox" name="onoffswitchMusic" class="onoffswitchMusic-checkbox" id="preferenceMusic" data-ng-model="$storage.userLoggedIn.preferences.music"/>
+								<label class="onoffswitchMusic-label" for="preferenceMusic">
+									<div class="onoffswitchMusic-inner"></div>
+									<div class="onoffswitchMusic-switch"></div>
+								</label>
+							</div>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-md-4 control-label" for="singlebutton">Gender Preference</label>		
+						<div class="col-md-4">
+							<label for="radio1">
+							<input id="radio1" name="gender" type="radio" value="noPreference" data-ng-model="$storage.userLoggedIn.preferences.gender"/>No Preference</label>
+							<label for="radio2">
+							<input id="radio2" name="gender" type="radio" value="maleOnly" data-ng-model="$storage.userLoggedIn.preferences.gender"/>Male Only</label>
+							<label for="radio3">
+							<input id="radio3" name="gender" type="radio" value="femaleOnly" data-ng-model="$storage.userLoggedIn.preferences.gender"/>Female Only</label>
+						</div>
+					</div>
+					
+					<div align="right">
+						<button class="btn btn-default" type="button" data-dismiss="modal">Cancel</button>
+						<input class='btn btn-primary' type="submit" value="Save">
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- Preferences Info Modal End -->
+
+<script>
+	$(function(){
+		$("#createtrip_pickupTextBox").geocomplete({
+		country: 'sg'
+		});
+		$("#createtrip_dropoffTextBox").geocomplete({
+		country: 'sg'
+		});
+	});
+	
+	
+	$("#weekdays").change(function (e) {
+    var checkedDays = $("#weekdays :checkbox").map(function () {
+        return +$(this).is(':checked');
+    }).get(); 
+    
+    console.log(checkedDays);
+	
+	});
+	
+	$('input:radio').click(function () {
+		$('label:has(input:radio:checked)').addClass('active');
+		$('label:has(input:radio:checked)').removeClass('inactive');
+		$('label:has(input:radio:not(:checked))').removeClass('active');
+		$('label:has(input:radio:not(:checked))').addClass('inactive');
+	});
+</script>

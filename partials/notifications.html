@@ -1,0 +1,34 @@
+<div class='col-lg-4 col-md-5 centering padding-top-align' data-ng-init="updateNotifications()">
+	<div class='row'>
+		<h1 class='logo-font-hd'>Notifications</h1>
+	</div>
+	
+	<div class='row'>
+		<div id="notification" style="padding:10px" data-ng-if="usersNotifications[$storage.userLoggedIn.emailKey] != null">
+             <div data-ng-repeat="notification in usersNotifications[$storage.userLoggedIn.emailKey] | orderBy:'DateTime'">
+                <button type="button" class="btn btn-default btn-lg btn-block" style="padding:10px;font-size:0.9em;">
+                    <table style="display:normal; text-align: left; width:100%; white-space:normal; word-wrap: break-word" align="center">
+                        <tr>
+							<td>From:</td>
+							<td>{{notification.From}}</td>
+						</tr>
+						
+						<tr>
+							<td>Date:</td>
+							<td>{{notification.DateTime}}</td>
+						</tr>
+						
+						<tr>
+							<td>Message:</td>
+							<td>{{notification.Message}}</td>
+						</tr>
+                    </table>
+                </button>
+            </div>
+        </div>
+		
+		<div id="notification" style="padding:10px" data-ng-if="usersNotifications[$storage.userLoggedIn.emailKey] == null">
+			<h3>You do not have any notifications!</h3>
+        </div>
+	</div>
+</div>

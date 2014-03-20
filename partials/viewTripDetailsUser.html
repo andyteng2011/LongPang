@@ -1,0 +1,310 @@
+<div class='col-lg-4 col-md-5 centering padding-top-align'>
+    <div class='row'>
+        <h1 class='logo-font-hd'>Trip Details</h1>
+		<div class="previous centering"><a href="#/viewTrips">&larr; View my Rides</a></div>
+		<br/>
+    </div>
+
+    <div class="row" data-ng-if="trips[viewTripDetailsId].driver.email == $storage.userLoggedIn.emailKey">
+		<table align="center">
+			<tr>
+				<td>From:&nbsp;&nbsp; {{trips[viewTripDetailsId].pickupPoint}}</td>
+			</tr>
+			<tr>
+				<td>To:&nbsp;&nbsp;&nbsp;&nbsp;{{trips[viewTripDetailsId].dropoffPoint}}</td>
+			</tr>
+			<tr>
+				<td><button id="join" type="button" class="btn btn-danger" data-ng-click="driverTerminateTrip(trips[viewTripDetailsId].id)"> 
+						<span class="glyphicon glyphicon-remove"></span>Terminate
+					</button>
+				</td>
+			</tr>
+		</table>
+    </div>
+	
+	<div class="row" data-ng-if="trips[viewTripDetailsId].driver.email != $storage.userLoggedIn.emailKey">
+		<div data-ng-if="trips[viewTripDetailsId].carpoolers[$storage.userLoggedIn.emailKey].email == null">
+			<table align="center">
+				<tr>
+					<td>From:&nbsp;&nbsp; {{trips[viewTripDetailsId].pickupPoint}}</td>
+				</tr>
+				<tr>
+					<td>To:&nbsp;&nbsp;&nbsp;&nbsp;{{trips[viewTripDetailsId].dropoffPoint}}</td>
+				</tr>
+				<tr>
+					<td><button id="join" type="button" class="btn btn-danger" data-ng-click="normalJoin(trips[viewTripDetailsId].id,trips[viewTripDetailsId].driver.email)"> 
+							<span class="glyphicon glyphicon-ok"></span>Join
+						</button>
+					</td>
+				</tr>
+			</table>
+		</div>
+		
+		<div  data-ng-if="trips[viewTripDetailsId].carpoolers[$storage.userLoggedIn.emailKey].email != null">
+			<table align="center">
+				<tr>
+					<td>From:&nbsp;&nbsp; {{trips[viewTripDetailsId].pickupPoint}}</td>
+				</tr>
+				<tr>
+					<td>To:&nbsp;&nbsp;&nbsp;&nbsp;{{trips[viewTripDetailsId].dropoffPoint}}</td>
+				</tr>
+				<tr>
+					<td><button id="join" type="button" class="btn btn-danger" data-ng-click="carpoolerTerminateTrip(trips[viewTripDetailsId].id,trips[viewTripDetailsId].driver.email)"> 
+							<span class="glyphicon glyphicon-remove"></span>Terminate
+						</button>
+					</td>
+				</tr>
+			</table>
+		</div>
+		
+    </div>
+	
+	
+	<br/>
+	
+	<div class="row" style="clear: both" data-ng-if="trips[viewTripDetailsId].carpoolers != null">
+		Trip's Carpoolers<br/>
+        <div id="userDiv" class="btn-group">
+            <div data-ng-repeat="user in trips[viewTripDetailsId].carpoolers" id={{user}} class="btn-group">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="padding-left:4px;padding-right:4px">
+                    <img src="{{users[user.email].profilePhoto}}" class="imgimg-thumbnail" style={{'width:'+imageSize+'px;max-width:140px;'}}>
+					<br/>
+					{{users[user.email].name}}
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a href="tel:{{users[user.email].contact}}">Call</a></li>
+                    <li><a href="" data-ng-click='notifyUser(user.email)'>Notify</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+	<br/>
+	<div class="panel-group" id="accordion">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h4 class="panel-title">
+					<a data-toggle="collapse" data-parent="#accordion" href=".collapseOne" class="modal-title-font-lobster">
+						Trip Details
+					</a>
+				</h4>
+			</div>
+			<div id="collapseOne" class="collapseOne panel-collapse collapse">
+				<div class="panel-body">
+					<table>
+						<tr>
+							<td style="text-align:left">Pickup Time:</td>
+							<td>&nbsp;</td>
+							<td style="text-align:left">{{trips[viewTripDetailsId].startTime}}</td>
+						</tr>
+						<tr>
+							<td style="text-align:left">Estimated Traveling Time:</td>
+							<td>&nbsp;</td>
+							<td style="text-align:left">{{trips[viewTripDetailsId].travelingTime}} mins</td>
+						</tr>
+						<tr>
+							<td style="text-align:left">Price:</td>
+							<td>&nbsp;</td>
+							<td style="text-align:left">${{trips[viewTripDetailsId].price}}</td>
+						</tr>
+						<tr colspan="3">
+							<td style="text-align:left">
+								Recurring Days<br/>
+								<input type="checkbox" id="createTrip.sun" data-ng-model="trips[viewTripDetailsId].recurringDays.sun" onclick="return false">Sun
+								<input type="checkbox" id="createTrip.mon" data-ng-model="trips[viewTripDetailsId].recurringDays.mon" onclick="return false">Mon
+								<input type="checkbox" id="createTrip.tue" data-ng-model="trips[viewTripDetailsId].recurringDays.tue" onclick="return false">Tue
+								<input type="checkbox" id="createTrip.wed" data-ng-model="trips[viewTripDetailsId].recurringDays.wed" onclick="return false">Wed
+								<input type="checkbox" id="createTrip.thur" data-ng-model="trips[viewTripDetailsId].recurringDays.thur" onclick="return false">Thur
+								<input type="checkbox" id="createTrip.fri" data-ng-model="trips[viewTripDetailsId].recurringDays.fri" onclick="return false">Fri
+								<input type="checkbox" id="createTrip.sat" data-ng-model="trips[viewTripDetailsId].recurringDays.sat" onclick="return false">Sat
+							</td>
+						</tr>
+						<tr colspan="3">
+							<td style="text-align:left">
+								Payment QR Code<br/>
+								<img src="{{trips[viewTripDetailsId].qrCode}}" style="height:150px;width:150px"/>
+							</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+		</div>
+		
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h4 class="panel-title">
+					<a data-toggle="collapse" data-parent="#accordion" href=".collapseTwo" class="modal-title-font-lobster">
+						Driver & Vehicle Details
+					</a>
+				</h4>
+			</div>
+			<div id="collapseTwo" class="collapseTwo panel-collapse collapse">
+				<div class="panel-body">
+					<table>
+						<tr colspan="3">
+							<td style="align:center"><img src="{{users[trips[viewTripDetailsId].driver.email].profilePhoto}}" class="img-responsive img-circle" style={{'width:'+imageSize+'px;max-width:100px;'}}/></td>
+						</tr>
+						<tr>
+							<td style="text-align:left">Driver Name:</td>
+							<td>&nbsp;</td>
+							<td style="text-align:left">{{users[trips[viewTripDetailsId].driver.email].name}}</td>
+						</tr>
+						<tr>
+							<td style="text-align:left">Driver Contact:</td>
+							<td>&nbsp;</td>
+							<td style="text-align:left">{{users[trips[viewTripDetailsId].driver.email].contact}}</td>
+						</tr>
+						<tr>
+							<td style="text-align:left">Vehicle Brand:</td>
+							<td>&nbsp;</td>
+							<td style="text-align:left">{{users[trips[viewTripDetailsId].driver.email].vehicleDetails.brand}}</td>
+						</tr>
+						<tr>
+							<td style="text-align:left">Vehicle Model:</td>
+							<td>&nbsp;</td>
+							<td style="text-align:left">{{users[trips[viewTripDetailsId].driver.email].vehicleDetails.model}}</td>
+						</tr>
+						<tr>
+							<td style="text-align:left">Carplate No.:</td>
+							<td>&nbsp;</td>
+							<td style="text-align:left">{{users[trips[viewTripDetailsId].driver.email].vehicleDetails.vehicleNumber}}</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<!-- Login Modal -->
+<div class="modal fade" id="loginModal_TripDetails" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-sm">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title modal-title-font-lobster" id="myModalLabel">Log In</h4>
+			</div>
+			<div class="modal-body">
+				<form role="form" data-ng-submit="login_TripDetails($event)">
+					<div class="input-group">
+						<span class="input-group-addon">
+						<i class='glyphicon glyphicon-envelope'></i>
+						</span>
+						<input id="email" type="text" class="form-control" placeholder='Enter Email Address' data-ng-model='login.email'>
+					</div>
+					
+					<div class="input-group">
+						<span class="input-group-addon">
+						<i class='glyphicon glyphicon-lock'></i>
+						</span>
+						<input id="password" type="password" class="form-control" placeholder='Enter Password' data-ng-model='login.password'>
+					</div>
+					<br/>
+					<div align="left">
+						<a href="" data-dismiss="modal" data-toggle="modal" data-target="#signupModal">Sign up as new LongPang'er</a>
+					</div>
+					<div align="right">
+						<button type="submit" class="btn btn-primary">Login</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- Login Modal End-->
+
+<!-- Payment Info Modal -->
+<div class="modal fade" id="paymentInfoModal_TripDetails" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			<h4 class="modal-title modal-title-font-lobster" id="myModalLabel">Payment Info</h4>
+			</div>
+			<div class="modal-body centering">
+				<form role="form" data-ng-submit="updatePaymentInfo_TripDetails($event)">
+					<h4>Select Your Payment Mode!</h4>
+					<input type="radio" name="payment" id="cc" onclick="selectPaymentMode();">Credit Card
+					<input type="radio" name="payment" id="pp" onclick="selectPaymentMode();">PayPal<br/><br/>
+					
+					<div id="creditCard" style="display:none; align:center">
+						<h5 align="left">Enter Credit Card Info</h5>
+						<ul class="list-group">
+							<li class="list-group-item">
+									<p align="left">Credit Card No.</p>
+									<input id="updatePaymentInfoCreditCardNo" type="text" class="form-control" placeholder='Enter credit card no' value="{{$storage.userLoggedIn.creditCardInfo.creditCardNo}}"/>
+							</li>
+							
+							<li class="list-group-item">
+								<p align="left">CVV2</p>
+								<input id="updatePaymentInfoCVV2" type="text" class="form-control" placeholder='Enter CVV2' value="{{$storage.userLoggedIn.creditCardInfo.cvv2}}"/>
+								
+							</li>
+
+							<li class="list-group-item">
+								<p align="left">Expiry Date</p>
+								<input id="updatePaymentInfoExpiryDate" type="date" class="form-control" placeholder='Enter expiry date' value="{{$storage.userLoggedIn.creditCardInfo.expiryDate}}"/>
+							</li>
+						</ul>
+					</div>
+					
+					<div id="paypal" style="display:none">
+						<h5 align="left">Enter PayPal Email</h5>
+						<ul class="list-group">
+							<li class="list-group-item">
+								<p align="left">PayPal Email</p>
+								<input id="updatePaymentInfoPayPalEmail" type="text" class="form-control" placeholder='Enter PayPal email' value="{{$storage.userLoggedIn.creditCardInfo.paypalEmail}}"/>
+							</li>
+						</ul>
+					</div>
+					
+					<div align="right">
+						<button class="btn btn-default" type="button" data-dismiss="modal">Cancel</button>
+						<input class='btn btn-primary' type="submit" value="Save">
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- Payment Info Modal End -->
+
+<!-- Notification Modal -->
+<div class="modal fade" id="notificationModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			<h4 class="modal-title modal-title-font-lobster" id="myModalLabel">Send a notification</h4>
+			</div>
+			<div class="modal-body">
+				<form role="form" data-ng-submit="sendNotification($event)">
+					<div>
+					To: {{users[notifyUserEmail].name}}<br/>
+					Message: <input id="message" type="text" class="form-control" placeholder='Enter your message'/>
+					</div>
+					<br/>
+					<div align="right">
+						<button class="btn btn-default" type="button" data-dismiss="modal">Cancel</button>
+						<input class='btn btn-primary' type="submit" value="Send">
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- Notification Modal End -->
+
+<script>
+	$('.collapse').collapse();
+
+	function selectPaymentMode() {
+		if(document.getElementById('cc').checked) {
+			document.getElementById('creditCard').style.display = 'block';
+			document.getElementById('paypal').style.display = 'none';
+		} else if(document.getElementById('pp').checked) {
+			document.getElementById('creditCard').style.display = 'none';
+			document.getElementById('paypal').style.display = 'block';
+		}
+	};
+</script>
