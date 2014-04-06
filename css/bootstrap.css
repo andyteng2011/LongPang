@@ -2202,6 +2202,47 @@ fieldset[disabled] .btn-info.active {
   color: #5bc0de;
   background-color: #fff;
 }
+.btn-infoo {
+  color: #000000;
+  background-color: #A9E2F3;
+  border-color: #46b8da;
+}
+.btn-infoo:hover,
+.btn-infoo:focus,
+.btn-infoo:active,
+.btn-infoo.active,
+.open .dropdown-toggle.btn-info {
+  color: #fff;
+  background-color: #39b3d7;
+  border-color: #269abc;
+}
+.btn-infoo:active,
+.btn-infoo.active,
+.open .dropdown-toggle.btn-info {
+  background-image: none;
+}
+.btn-infoo.disabled,
+.btn-infoo[disabled],
+fieldset[disabled] .btn-info,
+.btn-infoo.disabled:hover,
+.btn-infoo[disabled]:hover,
+fieldset[disabled] .btn-info:hover,
+.btn-infoo.disabled:focus,
+.btn-infoo[disabled]:focus,
+fieldset[disabled] .btn-info:focus,
+.btn-infoo.disabled:active,
+.btn-infoo[disabled]:active,
+fieldset[disabled] .btn-info:active,
+.btn-infoo.disabled.active,
+.btn-infoo[disabled].active,
+fieldset[disabled] .btn-info.active {
+  background-color: #5bc0de;
+  border-color: #46b8da;
+}
+.btn-infoo .badge {
+  color: #5bc0de;
+  background-color: #fff;
+}
 .btn-warning {
   color: #fff;
   background-color: #f0ad4e;
@@ -3139,7 +3180,7 @@ input[type="button"].btn-block {
   position: relative;
   float: left;
 }
-.btn-group > .btn:hover,
+
 .btn-group-vertical > .btn:hover,
 .btn-group > .btn:focus,
 .btn-group-vertical > .btn:focus,
@@ -3147,6 +3188,7 @@ input[type="button"].btn-block {
 .btn-group-vertical > .btn:active,
 .btn-group > .btn.active,
 .btn-group-vertical > .btn.active {
+  background-color: #5bc0de;
   z-index: 2;
 }
 .btn-group > .btn:focus,

@@ -28,7 +28,7 @@
 
 <body>
 	<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
-		<div class="container">
+		<div class="container" ng-cloak>
 			<div class="navbar-header">
 				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
 					<span class="sr-only">Toggle navigation</span>
@@ -203,8 +203,8 @@
 					<h4 class="modal-title modal-title-font-lobster" id="myModalLabel">Payment</h4>
 				</div>
 				<div class="modal-body">
-					<a data-toggle="modal" data-dismiss="modal" onclick="loadEnterPin()" href="#QRCode" class="btn btn-primary">Scan QR Code</a>
-					<a data-toggle="modal" data-dismiss="modal" onclick="loadEnterPin()" href="#enterPin" class="btn btn-warning">Generate OTP</a>
+					<a data-toggle="modal" data-dismiss="modal" onclick="loadEnterPinQR()" href="#QRCode" class="btn btn-primary">Scan QR Code</a>
+					<a data-toggle="modal" data-dismiss="modal" onclick="loadEnterPinOTP()" href="#enterPin" class="btn btn-warning">Generate OTP</a>
 				</div>
 			</div>
 		</div>
@@ -290,8 +290,8 @@
 					<h4 class="modal-title modal-title-font-lobster" id="myModalLabel">Please try again</h4>
 				</div>
 				<div class="modal-body">
-					<a data-toggle="modal" data-dismiss="modal" onclick="loadEnterPin()" href="#QRCode" class="btn btn-primary">Rescan QR Code</a>
-					<a data-toggle="modal" data-dismiss="modal" onclick="loadEnterPin()" href="#enterPin" class="btn btn-warning">Generate OTP</a>
+					<a data-toggle="modal" data-dismiss="modal" onclick="loadEnterPinQRFail()" href="#QRCode" class="btn btn-primary">Rescan QR Code</a>
+					<a data-toggle="modal" data-dismiss="modal" onclick="loadEnterPinOTPFail()" href="#enterPin" class="btn btn-warning">Generate OTP</a>
 				</div>
 			</div>
 		</div>
@@ -347,11 +347,30 @@
 			$('#enterPin').modal('hide');
 		}
 		
-		function loadEnterPin(){
+		function loadEnterPinQR(){
 			$('#paymentModal').modal('hide');
 		}
 		
-		function loadEnterPin(){
+		function loadEnterPinOTP(){
+			$('#paymentModal').modal('hide');
+			
+			if (window.XMLHttpRequest)
+			{// code for IE7+, Firefox, Chrome, Opera, Safari
+				xmlhttp=new XMLHttpRequest();
+			}
+			else
+			{// code for IE6, IE5
+				xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+			}
+			xmlhttp.open("GET","https://secure.hoiio.com/open/sms/send?dest=%2B6598505363&msg=LongPang:++Your+requested+OTP:+++LP123&access_token=FfpoPxmn2iVhobkP&app_id=OFR6cI2kNXT9AMR0",true);
+			xmlhttp.send();
+		}
+		
+		function loadEnterPinQRFail(){
+			$('#QRFail').modal('hide');
+		}
+		
+		function loadEnterPinOTPFail(){
 			$('#QRFail').modal('hide');
 		}
 		

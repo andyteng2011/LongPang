@@ -26,29 +26,27 @@
 				<div class="input-group">
 					Set Recurring Days
 					<div class="btn-group" id="weekdays" data-toggle="buttons">
-						<label class="btn btn-default active btn-sm">
-						<input type="checkbox" id="createTrip.sun" checked>Sun</label>	
-						<label class="btn btn-default active btn-sm">
-						<input type="checkbox" id="createTrip.mon" checked>Mon</label>
-						<label class="btn btn-default active btn-sm">
-						<input type="checkbox" id="createTrip.tue" checked>Tue</label>
-						<label class="btn btn-default active btn-sm">
-						<input type="checkbox" id="createTrip.wed" checked>Wed</label>
-						<label class="btn btn-default active btn-sm">
-						<input type="checkbox" id="createTrip.thur" checked>Thur</label>		
-						<label class="btn btn-default active btn-sm">
-						<input type="checkbox" id="createTrip.fri" checked>Fri</label>
-						<label class="btn btn-default active btn-sm">
-						<input type="checkbox" id="createTrip.sat" checked>Sat</label>
+						<label class="btn btn-default btn-sm">
+						<input type="checkbox" id="createTrip.sun">Sun</label>	
+						<label class="btn btn-default btn-sm">
+						<input type="checkbox" id="createTrip.mon">Mon</label>
+						<label class="btn btn-default btn-sm">
+						<input type="checkbox" id="createTrip.tue">Tue</label>
+						<label class="btn btn-default btn-sm">
+						<input type="checkbox" id="createTrip.wed">Wed</label>
+						<label class="btn btn-default btn-sm">
+						<input type="checkbox" id="createTrip.thur">Thur</label>		
+						<label class="btn btn-default btn-sm">
+						<input type="checkbox" id="createTrip.fri">Fri</label>
+						<label class="btn btn-default btn-sm">
+						<input type="checkbox" id="createTrip.sat">Sat</label>
 					</div>
-					
+					<label id="selectedDays"></label>
 				</div>
 			</li>
 			
-			<li style="list-style-type:none">
-					Start Date
-			</li>
 			<li class="list-group-item">
+				Start Date
 				<div class="input-group">
 					<span class="input-group-addon">
 						<i class="glyphicon glyphicon-calendar"></i>
@@ -56,11 +54,9 @@
 					<input class="form-control" type="date" data-ng-model="createTrip.startDate"/>
 					</div>
 			</li>
-			<li style="list-style-type:none">
-					Pick-up Time
-			</li>
-			
+
 			<li class="list-group-item">
+				Pick-up Time
 				<div class="input-group">
 					<span class="input-group-addon">
 						<i class="glyphicon glyphicon-time"></i>
@@ -69,17 +65,14 @@
 					</div>
 			</li>
 			<li class="list-group-item">
-				Quote a price
 				<div class="input-group">
-					<div class="col-xs-12">
-						<div class="range range-primary">
-							<input class="form-control" type="range" name="range" min="$1" max="$100" value="5" onchange="rangePrimary.value='$'+value" id="createTrip.price"/>
-							<output id="rangePrimary">$5</output>
-						</div>
-					</div>
+					<span class="input-group-addon">
+						<i class="glyphicon glyphicon-usd"></i>
+					</span>
+					<input class="form-control" type="number" name="createtrip_price" placeholder="Quote a price" data-ng-model="createTrip.price"/>
 				</div>
 			</li>
-			
+			<br/>
 			<div align="center">
 				<input class="btn btn-info" data-toggle="modal" value='Set Preferences' data-target="#preferencesInfoModal"/>
 				<button class="btn btn-primary" type="submit">Offer a Ride</button>
@@ -341,7 +334,29 @@
 			return +$(this).is(':checked');
 		}).get(); 
 		
-		console.log(checkedDays);
+		var SelectedNames= ["Sun","Mon","Tue","Wed","Thur","Fri","Sat"];
+		var selectedDaysStr= "";
+		var counter = 0;
+		for(var i =0; i< checkedDays.length; i++){
+			if(checkedDays[i] == 1){
+				if(i == 7){
+					selectedDaysStr += SelectedNames[i] + ".";
+					counter++;
+				}else{
+					selectedDaysStr += SelectedNames[i] + ",";
+					counter++;
+				}	
+			}
+		}
+		
+		if(counter == 7){
+				selectedDaysStr = "All Days"
+		}
+		if(counter == 0){
+			document.getElementById('selectedDays').innerHTML ="You have not selected any days";
+		}else{
+			document.getElementById('selectedDays').innerHTML ="You have selected " + selectedDaysStr;
+		}
 	});
 	
 	$('input:radio').click(function () {
@@ -360,4 +375,6 @@
 			document.getElementById('paypal').style.display = 'block';
 		}
 	};
+	
+	
 </script>

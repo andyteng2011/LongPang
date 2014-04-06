@@ -191,7 +191,7 @@ longpangApp.controller('longpangCtrl', function($scope, $location, $firebase, $l
 
         $scope.newUser.email = "";
         $scope.newUser.password = "";
-        $scope.newUser.fullname = "";
+        $scope.newUser.fullName = "";
         $scope.newUser.contactNumber = "";
 
         alert("Registered!"); //can change to better UI
@@ -544,7 +544,7 @@ longpangApp.controller('longpangCtrl', function($scope, $location, $firebase, $l
 				dropoffPointDistance: dropoffPointDistance,
 				startDate: $scope.createTrip.startDate,
 				startTime: $scope.createTrip.startTime,
-				price: parseInt(document.getElementById("createTrip.price").value),
+				price: parseInt($scope.createTrip.price),
 				recurringDays: {
 					mon: mon,
 					tue: tue,
@@ -577,6 +577,7 @@ longpangApp.controller('longpangCtrl', function($scope, $location, $firebase, $l
 
 			$scope.createTrip.startDate = "";
 			$scope.createTrip.startTime = "";
+			$scope.createTrip.price = "";
 			
 			$('#loginModal_createTrip').modal('hide');
 			$('#vehicleInfoModal_createTrip').modal('hide');
