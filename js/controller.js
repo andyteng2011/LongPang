@@ -62,22 +62,22 @@ longpangApp.controller('longpangCtrl', function($scope, $location, $firebase, $l
 	$scope.tempDriverEmail = "";
 
     //Load all users
-    var ref = new Firebase('https://longpang2.firebaseio.com/users/');
+    var ref = new Firebase('https://longpang.firebaseio.com/users/');
     $scope.users = $firebase(ref);
     $scope.users.$bind($scope, "users");
 
     //Load all trips
-    var ref2 = new Firebase('https://longpang2.firebaseio.com/trips/');
+    var ref2 = new Firebase('https://longpang.firebaseio.com/trips/');
     $scope.trips = $firebase(ref2);
     $scope.trips.$bind($scope, "trips");
 
     //Load all users trips
-    var ref3 = new Firebase('https://longpang2.firebaseio.com/usersTrips/');
+    var ref3 = new Firebase('https://longpang.firebaseio.com/usersTrips/');
     $scope.usersTrips = $firebase(ref3);
     $scope.usersTrips.$bind($scope, "usersTrips");
 	
 	//Load all users notifications
-    var ref4 = new Firebase('https://longpang2.firebaseio.com/usersNotifications/');
+    var ref4 = new Firebase('https://longpang.firebaseio.com/usersNotifications/');
     $scope.usersNotifications = $firebase(ref4);
     $scope.usersNotifications.$bind($scope, "usersNotifications");
 
@@ -116,7 +116,7 @@ longpangApp.controller('longpangCtrl', function($scope, $location, $firebase, $l
 		if($scope.$storage.loginStatus === true) {
 			$scope.loadQRCheck = false;
 			var check = false;
-			var ref = new Firebase('https://longpang2.firebaseio.com/usersTrips/' + $scope.$storage.userLoggedIn.emailKey);
+			var ref = new Firebase('https://longpang.firebaseio.com/usersTrips/' + $scope.$storage.userLoggedIn.emailKey);
 			ref.on('value', function(snapshot) {
 				snapshot.forEach(function(s) {
 					if(s.child('identity').val() === 'driver') {
@@ -183,7 +183,7 @@ longpangApp.controller('longpangCtrl', function($scope, $location, $firebase, $l
         });
 
         $scope.$storage.loggedInEmail = email;
-        var u = new Firebase('https://longpang2.firebaseio.com/users/' + email);
+        var u = new Firebase('https://longpang.firebaseio.com/users/' + email);
         u.on('value', function(snapshot) {
             $scope.$storage.userLoggedIn = snapshot.val();
             $scope.$storage.loginStatus = true;
@@ -625,7 +625,7 @@ longpangApp.controller('longpangCtrl', function($scope, $location, $firebase, $l
 			});
 			
 			var count = 0;
-			var ref4 = new Firebase('https://longpang2.firebaseio.com/usersNotifications/' + $scope.tempDriverEmail);
+			var ref4 = new Firebase('https://longpang.firebaseio.com/usersNotifications/' + $scope.tempDriverEmail);
 			ref4.on('value', function(snapshot) {
 				snapshot.forEach(function(s) {
 					if(s.child('Read').val() === false) {
@@ -677,7 +677,7 @@ longpangApp.controller('longpangCtrl', function($scope, $location, $firebase, $l
 			});
 			
 			var count = 0;
-			var ref4 = new Firebase('https://longpang2.firebaseio.com/usersNotifications/' + $scope.tempDriverEmail);
+			var ref4 = new Firebase('https://longpang.firebaseio.com/usersNotifications/' + $scope.tempDriverEmail);
 			ref4.on('value', function(snapshot) {
 				snapshot.forEach(function(s) {
 					if(s.child('Read').val() === false) {
@@ -713,7 +713,7 @@ longpangApp.controller('longpangCtrl', function($scope, $location, $firebase, $l
 		});
 		
 		var count = 0;
-		var ref4 = new Firebase('https://longpang2.firebaseio.com/usersNotifications/' + driverEmail);
+		var ref4 = new Firebase('https://longpang.firebaseio.com/usersNotifications/' + driverEmail);
 		ref4.on('value', function(snapshot) {
 			snapshot.forEach(function(s) {
 				if(s.child('Read').val() === false) {
@@ -730,7 +730,7 @@ longpangApp.controller('longpangCtrl', function($scope, $location, $firebase, $l
 	
 	$scope.driverTerminateTrip = function(id) {
 		
-		var ref2 = new Firebase('https://longpang2.firebaseio.com/trips/' + id + '/carpoolers');
+		var ref2 = new Firebase('https://longpang.firebaseio.com/trips/' + id + '/carpoolers');
 		var carpoolers = [];
 		ref2.on('value', function(snapshot) {
 			snapshot.forEach(function(s) {
@@ -749,7 +749,7 @@ longpangApp.controller('longpangCtrl', function($scope, $location, $firebase, $l
 			});
 			
 			var count = 0;
-			var ref5 = new Firebase('https://longpang2.firebaseio.com/usersNotifications/' + carpoolers[i]);
+			var ref5 = new Firebase('https://longpang.firebaseio.com/usersNotifications/' + carpoolers[i]);
 			ref5.on('value', function(snapshot) {
 				snapshot.forEach(function(s) {
 					if(s.child('Read').val() === false) {
@@ -835,11 +835,11 @@ longpangApp.controller('longpangCtrl', function($scope, $location, $firebase, $l
 	
 	$scope.updateNotifications = function() {
 		
-		var ref = new Firebase('https://longpang2.firebaseio.com/usersNotifications/' + $scope.$storage.userLoggedIn.emailKey);
+		var ref = new Firebase('https://longpang.firebaseio.com/usersNotifications/' + $scope.$storage.userLoggedIn.emailKey);
 		ref.on('value', function(snapshot) {
 			snapshot.forEach(function(s) {
 				if(s.child('Read').val() === false) {
-					var ref2 = new Firebase('https://longpang2.firebaseio.com/usersNotifications/' + $scope.$storage.userLoggedIn.emailKey + '/' + s.child('id').val());
+					var ref2 = new Firebase('https://longpang.firebaseio.com/usersNotifications/' + $scope.$storage.userLoggedIn.emailKey + '/' + s.child('id').val());
 					ref2.update({
 						Read: true
 					});
@@ -857,7 +857,7 @@ longpangApp.controller('longpangCtrl', function($scope, $location, $firebase, $l
 	};
 	
 	$scope.sendNotification = function() {
-		var ref = new Firebase('https://longpang2.firebaseio.com/usersNotifications/' + $scope.notifyUserEmail);
+		var ref = new Firebase('https://longpang.firebaseio.com/usersNotifications/' + $scope.notifyUserEmail);
 		$scope.sendNotification = $firebase(ref);
 		$scope.sendNotification.$bind($scope, "sendNotification");
 		
@@ -872,7 +872,7 @@ longpangApp.controller('longpangCtrl', function($scope, $location, $firebase, $l
 		});
 		
 		var count = 0;
-		var ref2 = new Firebase('https://longpang2.firebaseio.com/usersNotifications/' + $scope.notifyUserEmail);
+		var ref2 = new Firebase('https://longpang.firebaseio.com/usersNotifications/' + $scope.notifyUserEmail);
 		ref2.on('value', function(snapshot) {
 			snapshot.forEach(function(s) {
 				if(s.child('Read').val() === false) {
